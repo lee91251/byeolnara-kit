@@ -350,19 +350,36 @@ function drawSlot(el){
 function grow(t){const min=(+t.getAttribute('rows')||1)*parseFloat(getComputedStyle(t).lineHeight);t.style.height='auto';t.style.height=Math.max(min,t.scrollHeight)+'px'}
 
 /* ── 6. 안내 띠 ── */
+const UA=navigator.userAgent;
+const IOS=/iPhone|iPad|iPod/.test(UA)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const ANDROID=/Android/i.test(UA);
+const INAPP=/KAKAOTALK|NAVER\(inapp|Instagram|FBAN|FBAV|Line\//i.test(UA);   // 카톡·네이버앱 등 앱 안의 브라우저
+const STANDALONE=window.navigator.standalone===true||matchMedia('(display-mode: standalone)').matches;
+const SHARE_ICON='<svg width="15" height="18" viewBox="0 0 15 18" aria-hidden="true" style="vertical-align:-3px"><path d="M7.5 1v10M4 4.5 7.5 1 11 4.5M3 7.5H1.5v9h12v-9H12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const hidden=k=>{try{return !!localStorage.getItem(k)}catch(e){return false}};
 function bars(kit){
-  const ios=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-  const standalone=window.navigator.standalone===true||matchMedia('(display-mode: standalone)').matches;
   let h='';
-  if(ios&&!standalone) h+=`<div class="bar warn"><div><b>아이폰이라면, 먼저 '홈 화면에 추가'를 해 주세요.</b><br>사파리는 한동안 열지 않으면 쓰신 내용을 지울 수 있어요. 홈 화면에 추가해 두면 앱처럼 열리고 내용이 오래 남아요.</div>
-    <div>① 아래쪽 <b>공유 버튼</b>(네모에 위 화살표) → ② <b>홈 화면에 추가</b> → ③ 홈 화면의 <b>'나의 작은 별'</b> 아이콘으로 열어서 써 주세요.</div>
-    <div style="color:var(--warn)">※ 사파리에서 쓴 내용은 홈 화면 아이콘으로 옮겨지지 않아요. 꼭 아이콘으로 연 뒤에 써 주세요.</div></div>`;
+  if(INAPP) h+=`<div class="bar warn"><div><b>지금은 카카오톡 안에서 열려 있어요.</b><br>여기서 쓰면 내용이 사라질 수 있어요. ${IOS?'사파리':'인터넷 앱(크롬·삼성 인터넷)'}으로 열어서 써 주세요.</div>
+    <div class="row"><a class="btn fill" href="kakaotalk://web/openExternal?url=${encodeURIComponent(location.href)}">${IOS?'사파리':'인터넷 앱'}으로 열기</a></div>
+    <div style="font-size:12.5px">버튼이 안 되면: 화면 ${IOS?'오른쪽 아래':'오른쪽 위'} <b>⋯</b> → <b>다른 브라우저로 열기</b></div></div>`;
+  else if(IOS&&!STANDALONE) h+=`<div class="bar warn"><div><b>먼저 '홈 화면에 추가'를 해 주세요. (한 번만)</b><br>사파리는 한동안 열지 않으면 쓰신 내용을 지울 수 있어요. 홈 화면에 추가하면 앱처럼 열리고 내용이 오래 남아요.</div>
+    <ol style="margin:0;padding-left:20px;display:grid;gap:4px">
+     <li>화면 아래의 <b>공유 버튼</b> ${SHARE_ICON} 누르기 <span style="color:var(--soft)">(안 보이면 화면을 살짝 위로 올려 보세요)</span></li>
+     <li>목록을 내려 <b>'홈 화면에 추가'</b> → 오른쪽 위 <b>추가</b></li>
+     <li>홈 화면에 생긴 <b>'나의 작은 별'</b> 아이콘으로 열어서 써 주세요</li></ol>
+    <div style="color:var(--warn)">※ 사파리에서 쓴 내용은 아이콘 쪽으로 옮겨지지 않아요. 아이콘으로 연 뒤에 써 주세요.</div></div>`;
+  else if(ANDROID&&!STANDALONE&&!hidden('bnpo-hide-a2hs')) h+=`<div class="bar" id="a2hs"><div><b>홈 화면에 추가해 두면 편해요.</b> (안 해도 괜찮아요)<br>다음부터 링크를 찾지 않고 아이콘으로 바로 열 수 있어요.</div>
+    <div>크롬: 오른쪽 위 <b>⋮</b> → <b>홈 화면에 추가</b><br>삼성 인터넷: 아래 <b>≡</b> → <b>현재 페이지 추가</b> → <b>홈 화면</b></div>
+    <div class="row"><button type="button" class="btn" onclick="try{localStorage.setItem('bnpo-hide-a2hs','1')}catch(e){};this.closest('.bar').remove()">닫기</button></div></div>`;
   h+=`<div class="bar"><div>종이에 쓰실 분은 인쇄용 PDF를 받아 주세요. (컬러용 · 흑백 인쇄용)</div><div class="row"><a class="btn" href="${esc(kit.pdf)}" target="_blank" rel="noopener">인쇄용 PDF 받기</a></div></div>`;
   return h;
 }
 
 /* ── 시작 ── */
 (async()=>{
+  // 카톡 안에서 열렸으면 바깥 브라우저로 한 번 자동 전환(안 되면 안내 띠의 버튼)
+  let tried=false;try{tried=!!sessionStorage.getItem('bnpo-ext');sessionStorage.setItem('bnpo-ext','1')}catch(e){}
+  if(/KAKAOTALK/i.test(UA)&&!tried){location.href='kakaotalk://web/openExternal?url='+encodeURIComponent(location.href)}
   const token=getToken(), gate=$('#gate');
   if(!token){gate.innerHTML='구매하신 분께 보내 드린 <b>나만의 주소</b>로 열어 주세요.<br>주소를 잃어버리셨다면 스마트스토어 톡톡으로 알려 주세요.';return}
   let kit;

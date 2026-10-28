@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="나의 작은 별">
+<meta name="theme-color" content="#EFE8DC">
+<title>고마웠어, 나의 작은 별</title>
+<link rel="apple-touch-icon" href="img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&family=Noto+Serif+KR:wght@400;600&display=swap">
+<style>
+/* 별나라 우체국 추모 키트 — 폰에서 바로 쓰는 판(웹). 인쇄용 PDF와 같은 문구·삽화·별자리.
+   종이 한 장 = 한 쪽. 세로로 내려가며 11쪽. 색은 키트 그대로(단일 테마, 종이 느낌). */
+:root{
+  --ground:#EFE8DC; --paper:#FBF8F3; --card:#FFFDF9; --ink:#3f382f; --body:#4d443a; --sub:#6f6356; --soft:#8f8274;
+  --gold:#B8924F; --line:#d9ccb6; --line2:#cdbfa8; --dash:#b9a88c; --veil:rgba(63,56,47,.74); --onveil:#FFFDF9; --warn:#a0522d;
+  --serif:'Noto Serif KR','Apple SD Gothic Neo',serif;
+  --sans:'Noto Sans KR','Apple SD Gothic Neo',system-ui,sans-serif;
+  --lh:34px;
+  color-scheme:light;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--serif);word-break:keep-all;overflow-wrap:break-word;
+  padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px));padding-block:14px 60px}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{max-width:600px;margin:0 auto;display:grid;gap:18px}
+
+/* 안내 띠(홈 화면 추가·인쇄용) */
+.bar{background:var(--card);border:1px solid var(--line2);border-radius:10px;padding:14px 16px;font-family:var(--sans);font-size:13.5px;line-height:1.75;color:var(--body);display:grid;gap:8px}
+.bar b{color:var(--ink)}
+.bar.warn{border-color:var(--gold)}
+.bar .row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--gold);background:var(--card);color:var(--ink);font:inherit;font-size:13px;padding:7px 12px;border-radius:18px;text-decoration:none;cursor:pointer}
+.btn.fill{background:var(--gold);color:var(--onveil)}
+.btn:focus-visible,.ph:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* 쪽 */
+.page{background:var(--paper);border:1px solid var(--line2);border-radius:4px;box-shadow:0 6px 22px rgba(80,60,30,.07);padding-block:30px 22px;padding-inline:20px;position:relative;scroll-margin-top:12px}
+.page::after{content:attr(data-no);position:absolute;right:14px;bottom:10px;font-family:var(--sans);font-size:11px;color:var(--soft)}
+.hd{text-align:center;display:grid;gap:6px;margin-bottom:22px}
+.hd .dot{color:var(--gold);font-size:12px}
+.hd h2{margin:0;font-size:23px;font-weight:600;line-height:1.4;text-wrap:balance}
+.hd .sub{font-family:var(--sans);font-size:13px;color:var(--soft)}
+.felt{display:block;margin:0 auto;height:auto;mix-blend-mode:multiply}
+.hint{text-align:center;font-family:var(--sans);font-size:12.5px;font-style:italic;color:var(--sub);line-height:1.85;margin-top:20px;display:grid;gap:2px}
+.hint::before{content:"";width:60px;height:1px;background:var(--gold);opacity:.7;margin:0 auto 10px}
+.voice{text-align:center;font-family:var(--sans);font-style:italic;font-size:12.5px;color:var(--sub);line-height:1.85;padding:12px 0;border-block:1px solid var(--line2);margin-bottom:20px}
+
+/* 질문 + 줄 공책 */
+.q{margin-bottom:18px}
+.q label{display:block;font-size:15.5px;line-height:1.55;margin-bottom:2px}
+.q label::before{content:'⋆';color:var(--gold);margin-right:7px}
+textarea.lined{display:block;width:100%;border:0;resize:none;overflow:hidden;background-color:transparent;
+  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--lh) - 1px),var(--line) calc(var(--lh) - 1px),var(--line) var(--lh));
+  background-attachment:local;line-height:var(--lh);font-family:var(--serif);font-size:16px;color:var(--ink);padding:0 0 0 18px;margin:0;border-radius:0}
+textarea.lined:focus{outline:none;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent calc(var(--lh) - 1px),var(--dash) calc(var(--lh) - 1px),var(--dash) var(--lh))}
+input.blank{border:0;border-bottom:1.5px solid var(--gold);background:transparent;font:inherit;color:var(--ink);text-align:center;padding:0 2px;width:7.5em;border-radius:0;font-size:16px}
+input.blank:focus{outline:none;border-bottom-color:var(--ink)}
+.to{font-size:17px;margin:0 0 20px}
+
+/* 사진 칸 */
+.photos{display:grid;gap:18px 14px}
+.photos.two{grid-template-columns:1fr 1fr}
+@media (max-width:340px){.photos.two{grid-template-columns:1fr}}
+.slot{display:grid;gap:6px;min-width:0}
+.ph{position:relative;width:100%;min-width:0;max-width:100%;border:1.5px dashed var(--dash);border-radius:6px;background:var(--card);display:grid;place-items:center;overflow:hidden;cursor:pointer;color:var(--soft);font-family:var(--sans);font-size:12px;text-align:center;line-height:1.6;padding:8px}
+.ph .add b{display:block;font-size:24px;font-weight:400;color:var(--gold);line-height:1.1}
+.ph img{position:absolute;max-width:none;user-select:none;-webkit-user-drag:none;-webkit-touch-callout:none}
+.ph.has{border-style:solid;border-color:var(--line2);cursor:default;padding:0}
+.ph.adj{border:2px solid var(--gold);touch-action:none;cursor:grab}
+.ph .tip{position:absolute;left:0;right:0;bottom:0;padding:4px;background:var(--veil);color:var(--onveil);font-size:11px;pointer-events:none}
+.tools{display:flex;gap:6px;flex-wrap:wrap}
+.tools button{border:1px solid var(--line2);background:var(--card);color:var(--sub);font-family:var(--sans);font-size:12px;padding:4px 9px;border-radius:14px;cursor:pointer}
+.tools button.on{background:var(--gold);border-color:var(--gold);color:var(--onveil)}
+.zoom{display:flex;align-items:center;gap:6px;font-family:var(--sans);font-size:11.5px;color:var(--soft);white-space:nowrap;min-width:0}
+.zoom input{flex:1;min-width:0;accent-color:var(--gold)}
+.cap{display:grid;grid-template-columns:auto 1fr;gap:2px 6px;align-items:end;font-family:var(--sans);font-size:12px;color:var(--soft)}
+.cap input{min-width:0;border:0;border-bottom:1px solid var(--line2);background:transparent;font-family:var(--serif);font-size:15px;color:var(--ink);padding:2px 0;border-radius:0}
+.cap input:focus{outline:none;border-bottom-color:var(--gold)}
+
+/* 표지 · 마무리 */
+.cover,.end{text-align:center}
+.cover .stars{color:var(--gold);letter-spacing:10px;font-size:13px;margin-bottom:22px}
+.cover h1{font-size:32px;font-weight:600;line-height:1.35;margin:0}
+.cover .tag{font-family:var(--sans);color:var(--soft);font-size:13px;margin:14px 0 22px}
+.rule{width:80px;height:1px;background:var(--gold);opacity:.8;margin:0 auto 22px}
+.cover .poem{font-size:16px;line-height:2.1}
+.cover .allow{font-family:var(--sans);font-style:italic;color:var(--sub);font-size:13px;line-height:1.9;margin-top:20px}
+.brand{font-family:var(--sans);font-size:12px;letter-spacing:.3em;color:var(--gold);margin-top:14px}
+.end .sig{font-size:19px;line-height:1.9;margin:16px 0 6px}
+.end .tag{font-family:var(--sans);font-size:13px;color:var(--sub)}
+.end .brand{font-family:var(--serif);font-size:14px;margin:26px 0 6px}
+.end .star{display:block;width:260px;max-width:80%;margin:0 auto}
+.end .legal{font-family:var(--sans);font-size:11px;color:var(--soft);line-height:1.9;margin-top:22px}
+
+/* 쓰는 법 */
+.guide h3{font-size:16px;font-weight:600;margin:0 0 8px}
+.guide h3 span{color:var(--gold);margin-right:6px}
+.guide ul{list-style:none;padding:0;margin:0 0 20px;display:grid;gap:8px}
+.guide li{font-family:var(--sans);font-size:14px;line-height:1.85;color:var(--body);padding-left:12px;position:relative}
+.guide li::before{content:'·';color:var(--gold);position:absolute;left:0}
+.toc{border-top:1px solid var(--line2);font-size:15px}
+.toc a{display:flex;justify-content:space-between;gap:10px;padding:10px 2px;border-bottom:1px solid var(--line2);color:var(--ink);text-decoration:none}
+.toc a span:last-child{font-family:var(--sans);font-size:12px;color:var(--soft)}
+
+/* 답장 */
+.letter{background:var(--card);border:1px solid var(--line2);border-radius:5px;padding:24px 20px;font-size:16px;line-height:2.05}
+.letter p{margin:0 0 14px}
+.letter .strong{font-weight:600}
+.letter .sign{text-align:right;margin:10px 0 0}
+
+/* 별 카드 */
+.cut{border:1.5px dashed var(--dash);border-radius:6px;padding:12px;margin-top:24px;position:relative}
+.cut .sc{position:absolute;top:-10px;left:14px;background:var(--paper);padding:0 6px;font-family:var(--sans);font-size:11px;color:var(--soft)}
+.card{background:var(--card);border:1px solid var(--line2);border-radius:5px;padding:18px 14px;display:flex;align-items:center;gap:14px}
+.card .tx{flex:1;text-align:center;min-width:0}
+.card .ct{font-size:16px;font-weight:600;margin-bottom:8px}
+.card .ct input.blank{width:5.5em}
+.card p{margin:0;font-size:14.5px;line-height:1.95}
+
+/* 위로 */
+.heal .it{margin-bottom:16px}
+.heal h3{font-size:16px;font-weight:600;margin:0 0 4px}
+.heal h3::before{content:'⋆';color:var(--gold);margin-right:7px}
+.heal p{font-family:var(--sans);font-size:14px;line-height:1.85;color:var(--body);margin:0;padding-left:16px}
+.side{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:18px}
+.side .hint{margin:0;text-align:left}
+.side .hint::before{display:none}
+
+/* 기념일 */
+.days .intro{text-align:center;font-size:15px;line-height:2;margin-bottom:18px}
+.day{display:grid;grid-template-columns:8.5em 1fr;gap:10px;align-items:end;margin-bottom:12px}
+.day label{font-family:var(--sans);font-size:13px;color:var(--sub);padding-bottom:4px}
+.day input{min-width:0;border:0;border-bottom:1px solid var(--line2);background:transparent;font-family:var(--serif);font-size:16px;color:var(--ink);padding:4px 0;border-radius:0}
+.day input:focus{outline:none;border-bottom-color:var(--gold)}
+.vow{text-align:left;font-size:15px;line-height:2}
+
+.saved{position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--veil);color:var(--onveil);font-family:var(--sans);font-size:12px;padding:6px 12px;border-radius:14px;opacity:0;transition:opacity .3s;pointer-events:none}
+.saved.show{opacity:1}
+@media (prefers-reduced-motion:reduce){.saved{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <section class="page cover" data-no="">
+    <div class="stars">✦ ⋆ ✦</div>
+    <h1>고마웠어,<br>나의 작은 별</h1>
+    <div class="tag">함께한 시간을 오래 간직하는 반려동물 추모 키트</div>
+    <div class="rule"></div>
+    <div class="poem">너를 보내는 일이 이렇게 아플 줄 몰랐어.<br>그만큼 네가 내 세상의 전부였나 봐.<br>이 안에 너와의 모든 순간을 담아둘게.</div>
+    <div class="allow">울어도 괜찮아요. 그리워해도 괜찮아요.<br>천천히, 하나씩 꺼내어 보세요.</div>
+    <img class="felt" src="img/cover.webp" alt="" style="width:200px;margin-top:18px">
+    <div class="brand">별나라 우체국</div>
+  </section>
+  <div class="bar warn" id="gate">키트를 여는 중이에요…</div>
+</div>
+<div class="saved" id="saved" aria-live="polite">저장됨</div>
+
+<script>
+'use strict';
+/* ── 1. 구매자 확인: 주소의 k(구매자 키) → kits/<지문>.bin 을 그 키로 풀어서 이 키트의 별자리·인쇄용 링크를 꺼냄 ── */
+const $=s=>document.querySelector(s);
+const enc=new TextEncoder();
+const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');
+const getToken=()=>{const u=new URL(location.href);return (u.searchParams.get('k')||u.hash.replace(/^#k?=?/,'')).trim()};
+
+async function openKit(token){
+  const id=hex(await crypto.subtle.digest('SHA-256',enc.encode('bnpo-id:'+token)));
+  const res=await fetch('kits/'+id+'.bin',{cache:'no-store'});
+  if(!res.ok) throw new Error('nokit');
+  const buf=new Uint8Array(await res.arrayBuffer());
+  const raw=await crypto.subtle.digest('SHA-256',enc.encode('bnpo-key:'+token));
+  const key=await crypto.subtle.importKey('raw',raw,'AES-GCM',false,['decrypt']);
+  const plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:buf.slice(0,12)},key,buf.slice(12));
+  return {id,...JSON.parse(new TextDecoder().decode(plain))};
+}
+
+/* ── 2. 저장: 이 폰 안(IndexedDB)에만. 어디로도 보내지 않음 ── */
+let DB=null,STATE={f:{},p:{}},SKEY='';
+function idb(){return new Promise(ok=>{try{const r=indexedDB.open('bnpo-kit',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>ok(r.result);r.onerror=()=>ok(null)}catch(e){ok(null)}})}
+function load(){return new Promise(ok=>{
+  if(DB){try{const r=DB.transaction('kv').objectStore('kv').get(SKEY);r.onsuccess=()=>ok(r.result||null);r.onerror=()=>ok(null);return}catch(e){}}
+  try{ok(JSON.parse(localStorage.getItem(SKEY)||'null'))}catch(e){ok(null)}})}
+let tSave=null;
+function save(){clearTimeout(tSave);tSave=setTimeout(()=>{
+  let ok=false;
+  if(DB){try{DB.transaction('kv','readwrite').objectStore('kv').put(STATE,SKEY);ok=true}catch(e){}}
+  if(!ok){try{localStorage.setItem(SKEY,JSON.stringify(STATE));ok=true}catch(e){}}
+  const s=$('#saved');s.textContent=ok?'저장됨':'저장하지 못했어요 — 저장 공간을 확인해 주세요';s.classList.add('show');setTimeout(()=>s.classList.remove('show'),1200);
+},400)}
+
+/* ── 3. 쪽 그리기 ── */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const head=(t,s)=>`<div class="hd"><div class="dot">✦</div><h2>${t}</h2><div class="sub">${s}</div></div>`;
+const felt=(n,w,st='')=>`<img class="felt" src="img/${n}.webp" alt="" style="width:${w}px;${st}">`;
+let qn=0; const q=(t,rows)=>{const id='q'+(++qn);return `<div class="q"><label for="${id}">${t}</label><textarea class="lined" id="${id}" data-f="${id}" rows="${rows}"></textarea></div>`};
+const blank=(id,ph='')=>`<input class="blank" id="${id}" data-f="${id}" placeholder="${ph}" autocomplete="off">`;
+const photo=(id,ratio,label,cap)=>`<div class="slot" data-photo="${id}" data-ratio="${ratio}" data-label="${esc(label)}" data-cap="${cap?1:''}"></div>`;
+const page=(no,inner,cls='')=>`<section class="page ${cls}" id="p${no}" data-no="${no}">${inner}</section>`;
+
+function buildPages(kit){
+  const P=[];
+  P.push(page(2,head('이 키트를 쓰는 법','천천히, 당신의 속도로')+`<div class="guide">
+   <h3><span>⋆</span>이렇게 써 보세요</h3><ul>
+    <li><b>폰에서 바로</b> — 줄 위를 누르면 글을 쓸 수 있고, 사진 칸을 누르면 앨범이 열려요. 쓰는 대로 이 폰에 자동으로 저장돼요.</li>
+    <li><b>종이에 손으로</b> — 위의 '인쇄용 PDF 받기'에서 파일을 받아 A4에 '실제 크기(100%)'로 인쇄해 주세요. 흑백 프린터라면 '흑백 인쇄용' 파일을 쓰세요.</li>
+    <li>쓰신 글과 사진은 <b>이 폰 안에만</b> 저장돼요. 저희를 포함해 누구에게도 보내지지 않아요.</li></ul>
+   <h3><span>⋆</span>순서와 속도</h3><ul>
+    <li>앞에서부터 차례로 쓰는 걸 권해요. 미안한 마음을 먼저 꺼내고, 아이의 답장을 읽고, 고마움으로 마무리하도록 짜여 있어요.</li>
+    <li>오늘 다 쓰지 않아도 괜찮아요. 쓰다 멈추고 나중에 다시 열면, 쓰던 곳이 그대로 있어요.</li></ul>
+   <nav class="toc">
+    <a href="#p3"><span>미안해, 그 말부터 할게</span><span>3</span></a>
+    <a href="#p4"><span>우리가 함께한 눈부신 날들</span><span>4</span></a>
+    <a href="#p6"><span>우리의 작은 사진첩</span><span>6</span></a>
+    <a href="#p7"><span>나의 가족에게 — 별에서 온 답장</span><span>7</span></a>
+    <a href="#p8"><span>고마워, 이 말도 꼭 할게</span><span>8</span></a>
+    <a href="#p9"><span>이제, 당신의 마음을 위해</span><span>9</span></a>
+    <a href="#p10"><span>우리만의 기념일</span><span>10</span></a>
+   </nav></div>`,'guide'));
+
+  P.push(page(3,felt('letter',90,'margin:-10px auto 0')+head('미안해, 그 말부터 할게','가장 무거운 마음을, 가장 먼저')
+   +`<div class="to">사랑하는 ${blank('name3')} 에게</div>`
+   +q('너에게 가장 미안한 건',3)+q('다시 돌아갈 수 있다면, 내가 바꾸고 싶은 건',2)+q('그때는 몰랐는데, 지금에서야 알게 된 건',2)
+   +q('혹시 네가 서운했을까 봐, 지금도 마음에 걸리는 건',2)+q('너에게 아직 하지 못한 말은',2)
+   +`<div class="hint"><span>떠오르지 않는다면 — 더 일찍 알아채지 못한 것, 함께 있어주지 못한 시간, 무심했던 순간… 무엇이든 괜찮아요.</span><span>천천히 쓰세요. 오늘 다 쓰지 않아도 됩니다.</span></div>`));
+
+  P.push(page(4,felt('camera',84,'margin:-10px auto 0')+head('우리가 함께한 눈부신 날들','떠올리면 눈물이 나다가도, 결국 웃게 되는')
+   +`<div class="photos">${photo('a1','3/2','가장 좋아하는 사진을 넣어 주세요',1)}</div>
+     <div class="photos two" style="margin-top:18px">${photo('a2','1/1','',1)}${photo('a3','1/1','',1)}</div>`));
+
+  P.push(page(5,`<div class="hd"><div class="dot">✦</div></div>`
+   +q('너를 처음 만난 날, 나는',2)+q('내가 부르던 너의 수많은 별명들',1)+q('네가 세상에서 제일 좋아하던 것',1)
+   +q('너만 보면 웃음이 터지던 엉뚱한 순간',2)+q('지금 떠올려도 피식 웃게 되는, 너다웠던 모습',2)+q('그리고 지금, 가장 보고 싶은 건',2)
+   +`<div class="photos two" style="margin-top:6px">${photo('b1','7/6','처음 만난 날의 너',0)}${photo('b2','7/6','가장 너다웠던 모습',0)}</div>`));
+
+  P.push(page(6,head('우리의 작은 사진첩','사진이 없다면, 그 장면을 그려 넣어도 좋아요')
+   +`<div class="photos two">${[1,2,3,4,5,6].map(i=>photo('c'+i,'5/4','',1)).join('')}</div>`
+   +`<div class="hint"><span>산책길, 잠든 얼굴, 간식 앞의 눈빛… 평범해서 더 소중한 날들을 모아 주세요.</span></div>`));
+
+  P.push(page(7,head('나의 가족에게','별에서 온 답장')
+   +`<div class="voice">아이의 말을 대신할 수는 없지만,<br>그 마음이었기를 바라며 적었습니다.<br>지금 읽기 어렵다면, 접어 두었다 나중에 펼쳐 보셔도 괜찮아요.</div>
+   <div class="letter">
+    <p>${blank('fam7')} 에게</p>
+    <p>나 잘 지내고 있어.<br>여기는 아프지도, 춥지도 않아.</p>
+    <p>가끔 우리가 함께한 날들을 떠올려.<br>나를 부르던 목소리가 참 좋았는데.</p>
+    <p>혹시 지금도 나 때문에 울고 있다면,<br>울어도 돼. 참지 마.<br>그래도 너무 오래 아파하진 마.</p>
+    <p>나를 위해 얼마나 애썼는지, 나는 다 알아.<br>그러니 미안한 게 있다면 이제 내려놔도 돼.<br><span class="strong">나는 한 번도 원망한 적 없어.</span></p>
+    <p>여기서도 늘 보고 싶어.<br>언젠가 다시 만나는 날,<br>그때 나를 실컷 안아줘.</p>
+    <p>사랑해.</p>
+    <p class="sign">— 언제나 곁에 있는, ${blank('pet7')} 가</p>
+   </div>`));
+
+  P.push(page(8,head('고마워, 이 말도 꼭 할게','이제야 할 수 있는 말')
+   +`<div class="voice">이번엔, 당신이 아이에게 전할 차례예요.</div>`
+   +q('네가 없었다면, 내 삶은',2)+q('그때는 당연한 줄 알았는데, 이제 와 가장 고마운 건',3)+q('고맙다는 말, 제대로 못 한 것 같아. 지금 꼭 하고 싶은 말은',3)
+   +`<div class="cut"><span class="sc">✂ 인쇄해서 오려, 사진 옆이나 지갑에 넣어 두세요</span><div class="card">
+     ${felt('card_dog',78,'margin:0;flex:none')}
+     <div class="tx"><div class="ct">나의 작은 별, ${blank('pet8')} 에게</div>
+     <p>너는 내 세상에서<br>가장 밝은 별이었어.<br>함께한 모든 날이 고마웠어.<br>밤하늘을 볼 때마다<br>나는 너를 찾을게.</p></div></div></div>`));
+
+  const HEAL=[
+   ['지금 무너져도 괜찮아요','울다가 잠들어도, 아무것도 손에 잡히지 않아도 괜찮아요. 가족을 잃은 것과 조금도 다르지 않으니까요. 지금은 아무것도 하지 않아도 됩니다. 오늘 하루를 그저 지나 보내는 것만으로 충분해요.'],
+   ['혼자 삼키지 않으셔도 돼요','어떤 슬픔은 마음껏 드러낼 자리조차 없습니다. 며칠 지나면 다들 일상으로 돌아가고, 당신만 그 자리에 남지요. 아무에게도 말 못 하고 삼킨 날들이 있었을 거예요. 여기서만큼은 눈치 보지 않으셔도 됩니다. 마음껏 슬퍼하셔도, 아무도 뭐라 하지 않아요.'],
+   ['죄책감은 사랑의 다른 이름이에요',"'더 잘해줄걸', '조금만 더 일찍 알았더라면.' 그 후회가 자꾸만 되돌아올 거예요. 하지만 그건 당신이 부족해서가 아니라, 그만큼 마음을 쏟았기 때문입니다. 사랑하지 않았다면, 미안할 일도 없었을 테니까요. 이제 그 마음, 조금은 내려놓으셔도 됩니다."],
+   ['그리움은 문득문득 찾아옵니다','길에서 닮은 아이를 마주쳤을 때, 화면에 비슷한 아이가 나올 때, 늘 있던 자리에 아무도 없을 때. 괜찮다가도 한순간에 무너지곤 하지요. 그럴 땐 참지 않으셔도 됩니다. 밀어낼수록 더 크게 돌아오니까요. 잠시 그 아이를 떠올려 주세요. 그거면 충분합니다.'],
+   ['슬픔은 꺼낼수록 옅어져요','마음에만 담아두면 더 오래 아픕니다. 편지를 써도 좋고, 이름을 소리 내어 불러도 좋아요. 울면서 써도 됩니다. 잘 쓰지 않아도 되고, 다 채우지 못해도 괜찮아요. 꺼내어 마주하는 그것만으로, 마음은 조금씩 아물어 갑니다.'],
+   ['잊는 게 아니라, 함께 살아가는 거예요',"'이제 그만 잊어야지.' 스스로를 다그치지 않으셔도 됩니다. 우리는 사랑하는 존재를 잊지 않아요. 다만 그리움과 함께 걸어가는 법을 천천히 배울 뿐이에요. 언젠가 그 아이는 아픔이 아니라 따뜻한 기억이 되어, 늘 곁에 머물 겁니다."]];
+  P.push(page(9,head('이제, 당신의 마음을 위해','아이를 보낸 당신에게 건네는 위로')
+   +`<div class="heal">${HEAL.map(([a,b])=>`<div class="it"><h3>${a}</h3><p>${b}</p></div>`).join('')}</div>
+   <div class="side">${felt('candle',110,'margin:0;flex:none')}<div class="hint"><span>이 키트는, 우리도 아이를 보내고 나서 만들었습니다.</span><span>그 밤을 지나는 당신 곁에, 조용히 있고 싶었어요.</span></div></div>`));
+
+  const DAYS=['너를 처음 만난 날','너의 생일','우리가 헤어진 날','우리 둘만 아는 기념일','그 밖에 기억하고 싶은 날'];
+  P.push(page(10,head('우리만의 기념일','이별한 뒤에도, 사랑은 계속 이어지니까')
+   +`<div class="days"><div class="intro">생일엔 좋아하던 간식을, 기일엔 작은 촛불 하나를.<br>가끔은 네 이름을 소리 내어 불러도 볼게.<br>소중한 날들을 여기 적어두고, 그날마다 잠시 너를 떠올릴게.</div>
+   ${DAYS.map((d,i)=>`<div class="day"><label for="d${i}">${d}</label><input id="d${i}" data-f="d${i}" autocomplete="off"></div>`).join('')}
+   <div class="hint"><span>오늘 다 채우지 않아도 괜찮아요. 생각날 때 하나씩 적어 주세요.</span><span>적기 힘든 날짜는 비워 두셔도 됩니다.</span></div>
+   <div class="side">${felt('cake',120,'margin:0;flex:none')}<div class="vow"><b>우리는</b> 오늘로 끝나는 게 아니야.<br>이 날들이 돌아올 때마다<br>나는 너를 떠올릴 거야.<br>슬픔이 아니라, 사랑으로.</div></div></div>`));
+
+  P.push(page(11,`<img class="felt" src="img/postmaster.webp" alt="" style="width:230px;mix-blend-mode:normal;-webkit-mask-image:radial-gradient(ellipse at center,#000 58%,transparent 74%);mask-image:radial-gradient(ellipse at center,#000 58%,transparent 74%)">
+   <div class="sig">그 그리움은,<br>그만큼 깊이 사랑했다는 뜻이에요.</div>
+   <div class="tag">전하지 못한 마음을, 오늘도 편지로 띄웁니다</div>
+   <div class="brand">✦ 별나라 우체국</div>
+   <img class="star" src="${kit.star}" alt="세상에 하나뿐인 별자리">
+   <div class="tag" style="margin-top:8px">이 별자리는, 세상에 하나뿐인 당신과 아이의 별자리예요.</div>
+   <div class="legal">이 키트는 구매하신 분의 개인 소장용입니다.<br>무단 복제·공유·재판매를 금합니다. © 2026 별나라 우체국</div>`,'end'));
+  return P.join('');
+}
+
+/* ── 4. 사진 칸: 누르면 앨범 → 칸에 꽉 차게 → 손가락으로 크기(두 손가락)·위치(한 손가락) ── */
+function shrink(file){return new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{
+  const s=Math.min(1,1400/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);
+  c.getContext('2d').drawImage(im,0,0,c.width,c.height);ok({img:c.toDataURL('image/jpeg',.82),iw:c.width,ih:c.height})};im.onerror=no;im.src=r.result};r.onerror=no;r.readAsDataURL(file)})}
+/* s = '사진 전체가 칸에 딱 들어가는 크기'의 몇 배. 1보다 작으면 둘레에 종이가 보임. 처음엔 칸을 꽉 채우는 크기 */
+const SMIN=.3,SMAX=5,clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function place(ph,img,d){
+  const w=ph.clientWidth,h=ph.clientHeight;if(!w||!h||!d.iw)return;
+  const a=d.iw/d.ih,bw=a>w/h?w:h*a,bh=a>w/h?w/a:h;
+  if(d.s==null){d.s=Math.max(w/bw,h/bh);d.x=0;d.y=0}
+  const W=bw*d.s,H=bh*d.s;
+  img.style.width=W+'px';img.style.height=H+'px';img.style.left=(w/2+d.x*w-W/2)+'px';img.style.top=(h/2+d.y*h-H/2)+'px';
+}
+let adjusting='',placers=new Map();
+function drawSlot(el){
+  const id=el.dataset.photo, d=STATE.p[id]||{}, adj=adjusting===id, ratio=el.dataset.ratio, label=el.dataset.label;
+  const capF=k=>STATE.f[id+k]||'';
+  el.innerHTML=(d.img
+    ?`<div class="ph has${adj?' adj':''}" style="aspect-ratio:${ratio}"><img alt="" src="${d.img}">${adj?'<span class="tip">두 손가락 = 크기 · 한 손가락 = 이동</span>':''}</div>
+      <div class="tools"><button type="button" data-a="adj" class="${adj?'on':''}">${adj?'완료':'크기·위치'}</button><button type="button" data-a="chg">바꾸기</button><button type="button" data-a="del">지우기</button></div>
+      ${adj?`<label class="zoom">작게<input type="range" min="${SMIN}" max="${SMAX}" step="0.01" value="${d.s}" aria-label="사진 크기">크게</label>`:''}`
+    :`<label class="ph" style="aspect-ratio:${ratio}" for="file-${id}"><span class="add"><b>+</b>${label||'사진 넣기'}</span></label>`)
+    +`<input id="file-${id}" type="file" accept="image/*" hidden>`
+    +(el.dataset.cap?`<div class="cap"><label for="${id}w">언제</label><input id="${id}w" value="${esc(capF('w'))}" autocomplete="off"><label for="${id}p">어디서</label><input id="${id}p" value="${esc(capF('p'))}" autocomplete="off"></div>`:'');
+  const file=el.querySelector('input[type=file]');
+  file.onchange=async e=>{const f=e.target.files[0];if(!f)return;try{STATE.p[id]=Object.assign(await shrink(f),{s:null,x:0,y:0});adjusting='';drawSlot(el);save()}catch(err){}};
+  if(el.dataset.cap){['w','p'].forEach(k=>{el.querySelector('#'+id+k).oninput=e=>{STATE.f[id+k]=e.target.value;save()}})}
+  placers.delete(id);
+  if(!d.img) return;
+  const ph=el.querySelector('.ph'),img=ph.querySelector('img');
+  const go=()=>{if(!d.iw){d.iw=img.naturalWidth;d.ih=img.naturalHeight;d.s=null}place(ph,img,d)};
+  img.complete&&img.naturalWidth?go():img.onload=go;
+  placers.set(id,()=>place(ph,img,d));
+  el.querySelector('[data-a=adj]').onclick=()=>{const prev=adjusting;adjusting=adj?'':id;drawSlot(el);if(prev&&prev!==id){const o=document.querySelector(`[data-photo="${prev}"]`);o&&drawSlot(o)}};
+  el.querySelector('[data-a=chg]').onclick=()=>file.click();
+  el.querySelector('[data-a=del]').onclick=()=>{delete STATE.p[id];adjusting='';save();drawSlot(el)};
+  if(!adj) return;
+  const zr=el.querySelector('input[type=range]');
+  zr.oninput=e=>{d.s=+e.target.value;place(ph,img,d);save()};
+  const pts=new Map();let g=null;
+  const snap=()=>{const p=[...pts.values()];
+    if(p.length===1)g={sx:p[0].x,sy:p[0].y,x0:d.x,y0:d.y};
+    else if(p.length>=2){const[a,b]=p;g={dist:Math.hypot(a.x-b.x,a.y-b.y)||1,mx:(a.x+b.x)/2,my:(a.y+b.y)/2,x0:d.x,y0:d.y,s0:d.s}}
+    else g=null};
+  ph.onpointerdown=e=>{ph.setPointerCapture(e.pointerId);pts.set(e.pointerId,{x:e.clientX,y:e.clientY});snap()};
+  ph.onpointermove=e=>{if(!pts.has(e.pointerId)||!g)return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    const w=ph.clientWidth,h=ph.clientHeight,p=[...pts.values()];
+    if(p.length===1){d.x=g.x0+(p[0].x-g.sx)/w;d.y=g.y0+(p[0].y-g.sy)/h}
+    else{const[a,b]=p;d.s=clamp(g.s0*Math.hypot(a.x-b.x,a.y-b.y)/g.dist,SMIN,SMAX);d.x=g.x0+((a.x+b.x)/2-g.mx)/w;d.y=g.y0+((a.y+b.y)/2-g.my)/h}
+    d.x=clamp(d.x,-1,1);d.y=clamp(d.y,-1,1);zr.value=d.s;place(ph,img,d)};
+  ph.onpointerup=ph.onpointercancel=e=>{pts.delete(e.pointerId);snap();save()};
+  ph.onwheel=e=>{e.preventDefault();d.s=clamp(d.s*(e.deltaY<0?1.06:.94),SMIN,SMAX);zr.value=d.s;place(ph,img,d);save()};
+}
+
+/* ── 5. 줄 공책: 쓰는 만큼 줄이 늘어남 ── */
+function grow(t){const min=(+t.getAttribute('rows')||1)*parseFloat(getComputedStyle(t).lineHeight);t.style.height='auto';t.style.height=Math.max(min,t.scrollHeight)+'px'}
+
+/* ── 6. 안내 띠 ── */
+function bars(kit){
+  const ios=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  const standalone=window.navigator.standalone===true||matchMedia('(display-mode: standalone)').matches;
+  let h='';
+  if(ios&&!standalone) h+=`<div class="bar warn"><div><b>아이폰이라면, 먼저 '홈 화면에 추가'를 해 주세요.</b><br>사파리는 한동안 열지 않으면 쓰신 내용을 지울 수 있어요. 홈 화면에 추가해 두면 앱처럼 열리고 내용이 오래 남아요.</div>
+    <div>① 아래쪽 <b>공유 버튼</b>(네모에 위 화살표) → ② <b>홈 화면에 추가</b> → ③ 홈 화면의 <b>'나의 작은 별'</b> 아이콘으로 열어서 써 주세요.</div>
+    <div style="color:var(--warn)">※ 사파리에서 쓴 내용은 홈 화면 아이콘으로 옮겨지지 않아요. 꼭 아이콘으로 연 뒤에 써 주세요.</div></div>`;
+  h+=`<div class="bar"><div>종이에 쓰실 분은 인쇄용 PDF를 받아 주세요. (컬러용 · 흑백 인쇄용)</div><div class="row"><a class="btn" href="${esc(kit.pdf)}" target="_blank" rel="noopener">인쇄용 PDF 받기</a></div></div>`;
+  return h;
+}
+
+/* ── 시작 ── */
+(async()=>{
+  const token=getToken(), gate=$('#gate');
+  if(!token){gate.innerHTML='구매하신 분께 보내 드린 <b>나만의 주소</b>로 열어 주세요.<br>주소를 잃어버리셨다면 스마트스토어 톡톡으로 알려 주세요.';return}
+  let kit;
+  try{kit=await openKit(token)}catch(e){gate.innerHTML='키트를 열지 못했어요. 받으신 주소를 <b>끝까지 빠짐없이</b> 열었는지 확인해 주세요.<br>그래도 안 되면 스마트스토어 톡톡으로 알려 주세요.';return}
+  DB=await idb(); SKEY='kit-'+kit.id.slice(0,16);
+  const got=await load(); if(got&&got.f) STATE=got;
+  try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+  gate.remove();
+  $('#app').insertAdjacentHTML('beforeend',buildPages(kit));
+  $('.cover').insertAdjacentHTML('afterend',bars(kit));
+  document.querySelectorAll('[data-f]').forEach(el=>{
+    const k=el.dataset.f; if(STATE.f[k]!=null) el.value=STATE.f[k];
+    el.addEventListener('input',()=>{STATE.f[k]=el.value;if(el.tagName==='TEXTAREA')grow(el);save()});
+    if(el.tagName==='TEXTAREA') grow(el);
+  });
+  document.querySelectorAll('[data-photo]').forEach(drawSlot);
+  addEventListener('resize',()=>{document.querySelectorAll('textarea.lined').forEach(grow);placers.forEach(f=>f())});
+})();
+</script>
+</body>
+</html>
